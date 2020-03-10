@@ -1,0 +1,262 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Login || PantoMath ::</title>
+	{% load static %}
+	
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<style>
+
+        body {
+            margin: 0%;
+            padding: 0%;
+            font-family: sans-serif;
+            background: url({% static '/imgs/log.jpg' %});
+            height: 900px;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center; /* Center the image */
+
+        }
+
+        .box {
+            margin-top: 5%;
+            margin-left: 35%;
+            width: 28%;
+            padding: 60px;
+            background: #ffffff;
+            box-sizing: border-box;
+            box-shadow: 0 15px 25px rgba(0,0,0,.5);
+            border-radius: 10px;
+        }
+
+        @media screen and (max-width: 600px) {
+            .box {
+                margin-left: 17%;
+                width: 80%;
+                background-color: transparent;
+                box-shadow: 0 15px 25px transparent;
+            }
+        }
+
+        .user_icon {
+        color:blue;
+        margin-top: -10%;
+        font-size: 70px;
+        margin-left: 40%;
+       }
+
+        .box a:link {
+            font-size:18px;
+          color: #010c15f7;
+        }
+        .box a:visited {
+          color: #010a19;
+        }
+        .box a:hover {
+          color: #710530e6;
+        }
+        .box a:active {
+          color: yellow;
+        }
+
+        .box h2 {
+            margin: 0 0 30px;
+            padding: 0;
+            color: #29497dd6;
+            text-shadow: 2px 2px #3722a88a;
+            text-align: center;
+            font-size: 36px;
+        }
+
+        .box .inputBox {
+            position: relative;
+        }
+
+        .box .inputBox input {
+            width: 100%;
+            padding: 10px 0;
+            font-size: 16px;
+            color: #fff;
+            margin-bottom: 30px;
+            border: none;
+            border-bottom: 1px solid #6d0e33c9;
+            outline: none;
+            background: transparent;
+        }
+
+        .box .inputBox label {
+            position: absolute;
+            top: 0;
+            left: 0;
+            padding: 10px 0;
+            font-size: 20px;
+            color: #086773;
+            pointer-events: none;
+            transition: .5s; 
+        }
+
+        .box .inputBox input:focus ~ label,
+        .box .inputBox input:valid ~ label {
+            top: -20px;
+            left: 0;
+            color: #03a9f4;
+            font-size: 15px;
+        }
+
+        .box input[type="submit"]{
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #fff;
+            background: #1232b780;
+            padding: 10px 30px;
+            cursor: pointer;
+            font-size: 20px;
+            border-radius: 5px;
+        }
+        .box input[type="submit"].btn:hover{background:blue;}
+
+       .box .in input {
+            font-size: 20px;
+            color:black;
+        }
+
+.circle {
+  width: 200px;
+  height: 200px;
+  position: relative;
+}
+.circle .border {
+  /* content: ''; */
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: transparent;
+  border-radius: 50%;
+  border: 2px dashed #000;
+  -webkit-animation-name: Rotate;
+  -webkit-animation-duration: 2s;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-timing-function: linear;
+  -moz-animation-name: Rotate;
+  -moz-animation-duration: 2s;
+  -moz-animation-iteration-count: infinite;
+  -moz-animation-timing-function: linear;
+  -ms-animation-name: Rotate;
+  -ms-animation-duration: 2s;
+  -ms-animation-iteration-count: infinite;
+  -ms-animation-timing-function: linear;
+}
+.play {
+  padding: 20px 30px;
+  font-size: 56px;
+}
+.stop {
+  font-size: 12px;
+  padding: 30px;
+  text-align: center;
+}
+@-webkit-keyframes Rotate {
+  from {
+    -webkit-transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+}
+@-moz-keyframes Rotate {
+  from {
+    -moz-transform: rotate(0deg);
+  }
+  to {
+    -moz-transform: rotate(360deg);
+  }
+}
+@-ms-keyframes Rotate {
+  from {
+    -ms-transform: rotate(0deg);
+  }
+  to {
+    -ms-transform: rotate(360deg);
+  }
+}
+      
+
+	</style>
+</head>
+<body attr="{{ state }}">
+{% include "layouts/header.html" %}
+	<div class="row">
+		<div class="col-md-4">
+		<ul class="errors">
+		</ul>
+		<ul class="success_msg">
+		</ul>
+		</div>
+	</div>	
+ 
+
+        <div class="box" style="margin-bottom: 5%">
+            <div class="user_icon">
+            <i class="fa fa-user-circle"></i>
+            </div>
+            <h2><strong>Login</strong></h2>
+            <!-- <div class="row"> -->
+            <ul class="errors_msg" style="list-style-type: none;">
+
+            </ul>
+            <!-- </div>  -->
+            <form action="/login/" method="POST">
+                {% csrf_token %}
+                <div class="inputBox in">
+                    <input type="text" id="email" name="email" required>
+                    <label><i class="fa fa-envelope">&nbsp;</i>Email</label>
+                </div>
+                <div class="inputBox in">
+                    <input type="password" id="pwd" name="password" required>
+                    <label><i class="fa fa-key"></i>&nbsp;Password</label>
+                </div>
+                <input type="submit" class="btn" name="" value="submit">
+            </form>
+            <br>
+            <a href="/forgot_password">Forgot password??</a>
+    		<br>		
+    		<a href="/register_user">Create an account</a>		
+        </div>
+
+        <div class="circle">
+  <div class="border"></div>
+  <div class="stop">Stop me please</div>
+</div>
+
+
+
+<!-- {% include "layouts/footer.html" %} -->
+
+<script type="text/javascript">
+	 if ($("body").attr("attr") == 1){
+
+        $(".errors_msg").append("<li class='alert alert-danger'>Login username or password invalid.</li>")
+	 }
+$('form').on('submit', function(e) {
+	errors = []
+			$(".errors, .success_msg").empty()
+			errors[0] = ($("#email").val()=="")?$(".errors").append("<li class='alert alert-danger'>Email is Required</li>"):false
+
+			errors[1] = ($("#pwd").val()=="")?$(".errors").append("<li class='alert alert-danger'>Password is Required</li>"):false
+			if ((errors[0] || errors[1])) {
+				e.preventDefault()
+			}
+			else{
+				return true;
+			}
+});
+</script>
+</body>
+</html>

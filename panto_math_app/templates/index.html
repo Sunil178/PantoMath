@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Login || PantoMath ::</title>
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+	{% load static %}
+
+	<!-- jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+	<!-- Latest compiled JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+	<style>
+
+		body {
+		    margin: 0;
+		    padding: 0;
+		    font-family: sans-serif;
+		    background: url({% static '/imgs/register.jpg' %});
+		    background-size: cover;
+		}
+
+        nav a:link {
+          color: yellow;
+        }
+        nav a:visited {
+          color: yellow;
+        }
+        nav a:hover {
+          color: hotpink;
+        }
+        nav a:active {
+          color: blue;
+        }
+
+
+        .box a:link {
+          font-size:18px;
+          color: #010c15f7;
+        }
+        
+        .box a:visited {
+          color: #4f00fff0;
+        }
+        .box a:hover {
+          color:#060606f7;
+        }
+        .box a:active {
+          color:#520536f7;
+        }
+
+		.box {
+		    position: absolute;
+		    top: 50%;
+		    left: 50%;
+		    transform: translate(-50%, -50%);
+		    width: 500px;
+		    padding: 40px;
+		    background: #ffffff;
+		    box-sizing: border-box;
+		    box-shadow: 0 15px 25px rgba(0,0,0,.5);
+		    border-radius: 10px;
+		    font-color:red;
+
+		}
+		#loading_icon {
+		    position: absolute;		    
+		    top: 50%;
+		    left: 50%;
+		    transform: translate(-30terma%, -50%);
+		    width: 400px;
+		}
+
+		h1{
+			color: #29497dd6;
+            text-shadow: 2px 2px #3722a88a;
+            text-align: center;
+            font-size: 36px;
+            margin-top: 4px;
+		}
+
+		.box .inputBox {
+		    position: relative;
+		}
+
+		.box .inputBox input {
+		    width: 100%;
+		    padding: 10px 0;
+		    font-size: 16px;
+		    color: #fff;
+		    margin-bottom: 30px;
+		    border: none;
+		    border-bottom: 1px solid #02131df2;
+		    outline: none;
+		    background: transparent;
+		}
+
+		.box .inputBox label {
+		    position: absolute;
+		    top: 0;
+		    left: 0;
+		    padding: 10px 0;
+		    font-size: 16px;
+		    color: #2f95a7;
+		    pointer-events: none;
+		    transition: .5s; 
+		}
+
+		.box .inputBox input:focus ~ label,
+		.box .inputBox input:valid ~ label {
+		    top: -20px;
+		    left: 0;
+		    color: #03a9f4;
+		    font-size: 12px;
+		}
+
+		.box input[type="submit"] {
+		    background: transparent;
+		    border: none;
+		    outline: none;
+		    color: #fff;
+		    background: #03a9f4;
+		    padding: 10px 20px;
+		    cursor: pointer;
+		    border-radius: 5px;
+		    font-size:18px;
+		}
+
+		.box .in input {
+			font-size: 20px;
+			color:black;
+		}
+		hr {
+			  display: block;
+			  margin-top: 0.5em;
+			  margin-bottom: 0.5em;
+			  margin-left: 480px;
+			  margin-right: 480px;
+			  border-style: inset;
+			  border-width: 3px;
+			}
+	</style>
+</head>
+<body>
+{% include "layouts/header.html" %}
+<div class="container">
+	<h1>Register</h1><hr>
+	<br>
+	<div class="row">
+		<ul class="success_msg">
+
+		</ul>
+	</div>
+
+	<div class="box">	
+		<form id="register_form">
+			 <ul class="errors" style="list-style-type: none;">
+
+            </ul>
+		  <div class="inputBox in">
+		    <input type="text" id="first_name" name="first_name" required>
+		    <label for="first_name">First name:</label>
+		  </div>
+		  <div class="inputBox in">
+		    <input type="text" id="last_name" name="last_name" required>
+		    <label for="last_name">Last name:</label>
+		  </div>
+		  <div class="inputBox in">
+		    <input type="email" id="email" name="email" required>
+		    <label for="email">Email:</label>
+		  </div>
+		  <div class="inputBox in">
+		    <input type="password" id="pwd" name="password" required>
+		    <label for="password">Password:</label>
+		  </div>
+		  <div class="inputBox in">
+		    <input type="password" id="confirm_pwd" name="confirm_password" required>
+		    <label for="confirm_password">Confirm Password:</label>
+		  </div>
+		  <input id="register_form_btn" type="submit" name="" value="submit">
+		</form>
+		<a href="/">Log In</a>	
+	</div>
+</div>
+		<div id="loading_icon">
+			<img src="{% static '/imgs/lg.comet-spinner.gif' %}">
+		</div>
+{% include "layouts/footer.html" %}
+
+
+<script type="text/javascript">
+	$(function() {
+        $('#loading_icon').hide();
+		$("#register_form").on("submit", function(e) {
+			// alert("ok")
+			e.preventDefault()
+			
+			errors=[]
+			$(".errors, .success_msg").empty()
+			errors[0] = ($("#first_name").val()=="")?$(".errors").append("<li class='alert alert-danger'>First Name is Required</li>"):true
+
+			errors[1] = ($("#last_name").val()=="")?$(".errors").append("<li class='alert alert-danger'>Last Name is Required</li>"):true
+
+			errors[2] = ($("#email").val()=="")?$(".errors").append("<li class='alert alert-danger'>Email is Required</li>"):true
+
+			errors[3] = ($("#pwd").val()=="")?$(".errors").append("<li class='alert alert-danger'>Password is Required</li>"):true
+
+			errors[4] = ($("#confirm_pwd").val()=="")?$(".errors").append("<li class='alert alert-danger'>Confirm Password is Required</li>"):true
+
+			errors[5] = ($("#confirm_pwd").val()!=$("#pwd").val())?$(".errors").append("<li class='alert alert-danger'>Password & Confirm Password should be same.</li>"):true
+
+	    	var token = '{{csrf_token}}';
+	    	console.log("error aray")
+	    	for(i=0;i<errors.length;i++) {
+	    		if (errors[i]!=true) {
+	    			errors[i]=false
+	    		}
+	    	}
+	    	if (errors[0] && errors[1] && errors[2] && errors[3] && errors[4] && errors[5] ) {    		
+	          $.ajax({
+	            url: '/create_user/',
+		        headers: { "X-CSRFToken": token },
+	            method: 'POST',
+	            type: 'JSON',
+	            data:  new FormData(this),
+	            contentType: false,
+	            cache: false,
+	            processData:false,
+	            beforeSend: function() {
+	              $('#loading_icon').show();
+	            },
+	            success: function(obj) {
+	            	console.log(obj)
+	            	console.log(obj.status)
+	            	if (obj.status=="success") {
+	            		$(".success_msg").empty()
+	            		$(".success_msg").append("<li class='alert alert-success'>Registration successful!</li>")
+	            	}
+	            	if (obj.status=="Email already exists!") {
+	            		$(".success_msg").empty()
+	            		$(".success_msg").append("<li class='alert alert-warning'>"+obj.status+"</li>")
+	            	}
+	            	window.location="/dashboard";
+	            },
+	            error: function(obj) {
+	            	console.log(obj)
+	            	alert("error")
+	            },
+	            complete: function() {
+	              $('#loading_icon').hide();
+	            }
+	          })
+	    	}
+
+		})
+	});
+</script>
+</body>
+</html>

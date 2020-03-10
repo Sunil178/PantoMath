@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+	{% load static %}
+	<title></title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Courgette&display=swap" rel="stylesheet">
+<style type="text/css">
+	body {
+		background-image: url("/static/imgs/twitter-background.jpg");
+	  	background-size: cover;
+	  	background-repeat: no-repeat;
+
+		}
+
+.font{
+	color: black;
+	font-size: 40px;
+	padding-bottom: 10%;
+	font-family: 'Courgette', cursive;
+
+}
+
+	.middle {
+		margin-left: 25%;
+		margin-top: 6%;
+	}
+
+	p {
+		font-size: 50px;
+	}
+
+	.form-group {
+		margin-top: -60%;
+	}
+
+	.button {
+  background-color: black; /* Green */
+  border: none;
+  border-radius: 10%;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  width: 50%;
+  font-size: 20px;
+  font-family: 'Courgette', cursive;
+
+}
+
+.in {
+
+
+color: black;
+font-size: 30px;
+border: none;
+font-family: 'Courgette', cursive;
+background: transparent;
+border-bottom: 5px solid #032867f2;
+width: 100%;
+
+
+}
+
+.in:focus{
+	border-bottom: 5px solid white;
+
+}
+
+
+</style>
+</head>
+<body>
+	{% include 'layouts/header.html' %}
+
+
+<div id="piechart"></div>
+
+	<form method="POST" action="/fetch_keyword/">
+		{% csrf_token %}
+<div class="col-md-3 col-sm-3 col-xs-3 middle">
+<div class="form-group">
+  <label  class = "font" for="usr"> Write Keyword:</label>
+  <input type="text" name="keyword" class="in" id="usr">
+  <img src="/static/imgs/search.png" width="30" height="34" style="margin-left: 99%; margin-top: -13%" >
+  <input type="submit" name="submit" class="button" style="margin-top: 6%;" >
+</div>
+</div>
+</form>
+
+<script type="text/javascript">
+
+
+// Load google charts
+google.charts.load('current', {'packages':['corechart']});
+google.charts.setOnLoadCallback(drawChart);
+
+// Draw the chart and set the chart values
+function drawChart() {
+  var data = google.visualization.arrayToDataTable([
+  ['Task', 'Hours per Day'],
+  ['Positive', parseFloat("{{score.pos}}")],
+  ['Negative', parseFloat("{{score.neg}}")],
+  ['Neutral', parseFloat("{{score.neu}}")]
+]);
+
+  // Optional; add a title and set the width and height of the chart
+  var options = {'backgroundColor': 'transparent', 'title':'Sentiments', 'width':550, 'height':400, 'colors': ['#66ff33', '#ff0000', '#0033cc']};
+
+  // Display the chart inside the <div> element with id="piechart"
+  var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+  chart.draw(data, options);
+}
+</script>
+</body>
+</html>
