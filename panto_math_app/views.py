@@ -11,6 +11,16 @@ from django.http import JsonResponse
 import requests
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 import tweepy
+from django.core.exceptions import ObjectDoesNotExist, PermissionDenied, ValidationError
+
+# Decorators function to prohibit illegal access to the urls directly
+def prohibit_url_access(func):
+    def wrap(request, *args, **kwargs):
+        if "user" in request.session:
+            return func(request, *args, **kwargs)
+        else:
+            raise PermissionDenied
+    return wrap
 
 def test(request):
 	print("hel")

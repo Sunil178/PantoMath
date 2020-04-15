@@ -79,10 +79,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'PantoMath',
-        'USER':'root',
-        'HOST':'localhost',
-        'PASSWORD':'1234',
-        'PORT':'3306',
+        'USER': 'root',
+        'HOST': 'localhost',
+        'PASSWORD': 'Pr@tik12345',
+        'PORT': '3306',
 
     }
 }
@@ -126,7 +126,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-STAT,
+    STAT,
 ]
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
