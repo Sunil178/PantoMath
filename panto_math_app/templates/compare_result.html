@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Compare result</title>
+</head>
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+  <script type="text/javascript" src="https://cdn.fusioncharts.com/fusioncharts/latest/fusioncharts.js"></script>
+  <script type="text/javascript" src="https://cdn.fusioncharts.com/fusioncharts/latest/themes/fusioncharts.theme.fusion.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Courgette&display=swap" rel="stylesheet">
+
+<body>
+{% include "layouts/header.html" %}
+<center>
+<div class="row">
+	<div class="col-md-4">
+		<div id="result1"></div>
+	</div>
+	<div class="col-md-4">
+		<div id="compare_chart"></div>
+	</div>
+	<div class="col-md-4">
+		<div id="result2"></div>
+	</div>
+</div>
+</center>
+
+<script type="text/javascript">
+
+
+// Load google charts
+google.charts.load('current', {'packages':['corechart']});
+google.charts.setOnLoadCallback(drawChart);
+
+// Draw the chart and set the chart values
+function drawChart() {
+  var data = google.visualization.arrayToDataTable([
+  ['Task', 'Hours per Day'],
+  ['Positive', parseFloat("{{score1.pos}}")],
+  ['Negative', parseFloat("{{score1.neg}}")],
+  ['Neutral', parseFloat("{{score1.neu}}")]
+]);
+
+  // Optional; add a title and set the width and height of the chart
+  var options = {'backgroundColor': 'transparent', 'title':'Sentiments on "{{keyword1}}"', 'width':550, 'height':400, 'colors': ['#66ff33', '#ff0000', '#0033cc']};
+
+  // Display the chart inside the <div> element with id="piechart"
+  var chart = new google.visualization.PieChart(document.getElementById('result1'));
+  chart.draw(data, options);
+}
+</script>
+
+
+<script type="text/javascript">
+
+
+// Load google charts
+google.charts.load('current', {'packages':['corechart']});
+google.charts.setOnLoadCallback(drawChart);
+
+// Draw the chart and set the chart values
+function drawChart() {
+  var data = google.visualization.arrayToDataTable([
+  ['Task', 'Hours per Day'],
+  ['Positive', parseFloat("{{score2.pos}}")],
+  ['Negative', parseFloat("{{score2.neg}}")],
+  ['Neutral', parseFloat("{{score2.neu}}")]
+]);
+
+  // Optional; add a title and set the width and height of the chart
+  var options = {'backgroundColor': 'transparent', 'title':'Sentiments on "{{keyword2}}"', 'width':550, 'height':400, 'colors': ['#66ff33', '#ff0000', '#0033cc']};
+
+  // Display the chart inside the <div> element with id="piechart"
+  var chart = new google.visualization.PieChart(document.getElementById('result2'));
+  chart.draw(data, options);
+}
+</script>
+
+
+<script type="text/javascript">
+  FusionCharts.ready(function() {
+    var chartObj = new FusionCharts({
+      type: 'mscolumn3d',
+      renderAt: 'compare_chart',
+      width: '100%',
+      height: '500',
+      dataFormat: 'json',
+      dataSource: {
+        "chart": {
+          "numDivLines": "5",
+          "theme": "fusion",
+          "caption": "Revenue vs Expense",
+          "xAxisname": "Months",
+          "yAxisName": "Revenu,Expense(INR)",
+          "numberPrefix": "₹",
+          "plotFillAlpha": "80",
+          "numberScaleUnit": "K,L,C",
+          "thousandSeparatorPosition": "2,3",
+          "divLineIsDashed": "1",
+          "divLineDashLen": "1",
+          "divLineGapLen": "1",
+          "palettecolors": "FF0000,000000"
+        },
+        "categories": [{
+          "category": [{"label": "Positive"}, {"label": "Negative"}, {"label": "Neutral"}]
+        }],
+        "dataset": [{
+          "seriesname": "{{keyword1}}",
+          "data": [{"value": "{{score1.pos}}"}, {"value": "{{score1.neg}}"}, {"value": "{{score1.neu}}"}]
+
+        }, {
+          "seriesname": "{{keyword2}}",
+          "data": [{"value": "{{score2.pos}}"}, {"value": "{{score2.neg}}"}, {"value": "{{score2.neu}}"}]
+        }],
+      },
+    });
+    chartObj.render();
+  });
+</script>
+
+
+</body>
+</html>

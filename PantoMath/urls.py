@@ -35,4 +35,5 @@ urlpatterns = [
     path('fetch_text_sentiments/', views.fetchTextSentiments),
     path('verify_email/<str:verification_string_through_email>', views.verifyEmail),
     path('show_compare/', views.showCompare),
+    path('compare/', views.compare),
 ]
