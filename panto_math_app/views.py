@@ -25,6 +25,11 @@ def prohibit_url_access(func):
     return wrap
 
 
+API_KEY="tdgvUp2IBZY1I9z1Qw8u7uiLB"
+API_SECRET="TLFE0ZJa0ua3iEMMt3XSMVPPbLhJQi4xIEHSG05K2zrrUXlBzl"
+ACCESS_TOKEN="1088087472121102336-Q08jjVCsimX4FHY8UiooiluceE34VI"
+ACCESS_TOKEN_SECRET="8kFdQ6CH52N08V3WnbMfQA62RALesZDKDudYm21W5GCc6"
+
 def test(request):
     print("hel")
     return False
@@ -170,6 +175,39 @@ def showKeyword(request):
 
 no = 0
 tweets = ""
+def fetchKeyword(request):
+	auth = tweepy.OAuthHandler(API_KEY, API_SECRET)
+	auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
+	obj = tweepy.API(auth)
+	class MyStreamListener(tweepy.StreamListener):
+	   def on_data(self, data):
+	       global no, tweets
+	       no += 1
+	       data = json.loads(data)
+	       print(len(data))
+	       print(data)
+	       if 'text' in data:
+		       tweets += data['text'] + " "
+	       if no == 100:
+	           no = 0
+	           return False
+	   def on_status(self, status):
+	       myStreamListener = MyStreamListener()
+	       myStream = tweepy.Stream(auth = obj.auth, listener = myStreamListener)
+	       myStream.filter(track = request.POST['keyword'])
+	   def on_error(self, status_code):
+	       if status_code == 420:
+	           return False
+
+	global tweets, no
+	streamListener = MyStreamListener()
+	streamListener.on_status("success")
+	analyser = SentimentIntensityAnalyzer()
+	score = analyser.polarity_scores(tweets)
+	no = 0
+	tweets = ""
+	return render(request, 'keyword.html', {"score": score})
+
 
 
 def fetchKeyword(request):
@@ -223,4 +261,44 @@ def fetchTextSentiments(request):
 
 @prohibit_url_access
 def showCompare(request):
-    return render(request, "compare.html")
+	return render(request, "compare.html")
+
+def compare(request):
+	key1 = request.POST['keyword1']
+	key2 = request.POST['keyword2']
+	auth = tweepy.OAuthHandler(API_KEY, API_SECRET)
+	auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
+	obj = tweepy.API(auth)
+	class MyStreamListener(tweepy.StreamListener):
+	   def setData(self, data):
+	       self.search_data = data
+	   def on_data(self, data):
+	       global no, tweets
+	       no += 1
+	       data = json.loads(data)
+	       if 'text' in data:
+		       tweets += data['text'] + " "
+	       if no == 100:
+	           no = 0
+	           return False
+	   def on_status(self, status):
+	       myStreamListener = MyStreamListener()
+	       myStream = tweepy.Stream(auth = obj.auth, listener = myStreamListener)
+	       myStream.filter(track = self.search_data)
+	   def on_error(self, status_code):
+	       if status_code == 420:
+	           return False
+
+	streamListener1 = MyStreamListener()
+	streamListener1.setData(request.POST['keyword1'])
+	streamListener1.on_status("success")
+	analyser1 = SentimentIntensityAnalyzer()
+	score1 = analyser1.polarity_scores(streamListener1.search_data)
+
+	streamListener2 = MyStreamListener()
+	streamListener2.setData(request.POST['keyword2'])
+	streamListener2.on_status("success")
+	analyser2 = SentimentIntensityAnalyzer()
+	score2 = analyser2.polarity_scores(streamListener2.search_data)
+
+	return render(request, "compare_result.html", {"keyword1": request.POST['keyword1'], "keyword2": request.POST['keyword2'], "score1": score1, "score2": score2})
